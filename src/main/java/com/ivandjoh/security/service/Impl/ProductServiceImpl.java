@@ -1,10 +1,12 @@
 package com.ivandjoh.security.service.Impl;
 
 import com.ivandjoh.security.dto.Product;
+import com.ivandjoh.security.entity.UserInfo;
+import com.ivandjoh.security.repository.UserInfoRepository;
 import com.ivandjoh.security.service.ProductService;
 import jakarta.annotation.PostConstruct;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,31 +19,49 @@ public class ProductServiceImpl implements ProductService {
 
     List<Product> productList = null;
 
-    private static final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
+    @Autowired
+    private UserInfoRepository repository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostConstruct
-    public void LoadProductFromDB() {
-        productList = IntStream.rangeClosed(1, 10)
+    public void loadProductsFromDB() {
+        productList = IntStream.rangeClosed(1, 100)
                 .mapToObj(i -> Product.builder()
-                        .id((long) i)
-                        .name("Product " + i)
+                        .productId(i)
+                        .name("product " + i)
                         .qty(new Random().nextInt(10))
-                        .price(new Random().nextInt(5000))
-                        .build()
+                        .price(new Random().nextInt(5000)).build()
                 ).collect(Collectors.toList());
+    }
+
+
+    public List<Product> getProducts() {
+        return productList;
+    }
+
+    public Product getProduct(int id) {
+        return productList.stream()
+                .filter(product -> product.getProductId() == id)
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("product " + id + " not found"));
+    }
+
+
+    public String addUser(UserInfo userInfo) {
+        userInfo.setPassword(passwordEncoder.encode(userInfo.getPassword()));
+        repository.save(userInfo);
+        return "user added to system ";
     }
 
     @Override
     public List<Product> getAllProducts() {
-        log.info("Product List: {}", productList);
-        return productList;
+        return null;
     }
 
     @Override
-    public Product getProductById(Long id) {
-        return productList.stream()
-                .filter(product -> product.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Product with ID : " + id + " not found!"));
+    public Product getProductById(int id) {
+        return null;
     }
 }
