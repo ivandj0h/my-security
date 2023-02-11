@@ -1,6 +1,7 @@
 package com.ivandjoh.security.controller;
 
 import com.ivandjoh.security.dto.Product;
+import com.ivandjoh.security.entity.UserInfo;
 import com.ivandjoh.security.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,20 +20,20 @@ public class ProductController {
     public String welcome() {
         return "Welcome this endpoint is not secure";
     }
-//
-//    @PostMapping("/new")
-//    public String addNewUser(@RequestBody UserInfo userInfo){
-//        return service.addUser(userInfo);
-//    }
+
+    @PostMapping("/new")
+    public String addNewUser(@RequestBody UserInfo userInfo){
+        return service.addUser(userInfo);
+    }
 
     @GetMapping("/all")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<Product> getAllTheProducts() {
         return service.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PreAuthorize("hasAuthority('USER')")
     public Product getProductById(@PathVariable int id) {
         return service.getProductById(id);
     }

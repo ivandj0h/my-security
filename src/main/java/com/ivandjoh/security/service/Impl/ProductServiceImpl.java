@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
     public String addUser(UserInfo userInfo) {
         userInfo.setPassword(passwordEncoder.encode(userInfo.getPassword()));
         repository.save(userInfo);
-        return "user added to system ";
+        return "User added successfully" + userInfo;
     }
 
     @Override
