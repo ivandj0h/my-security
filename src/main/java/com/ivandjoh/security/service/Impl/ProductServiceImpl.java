@@ -3,6 +3,8 @@ package com.ivandjoh.security.service.Impl;
 import com.ivandjoh.security.dto.Product;
 import com.ivandjoh.security.service.ProductService;
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.stream.IntStream;
 public class ProductServiceImpl implements ProductService {
 
     List<Product> productList = null;
+
+    private static final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     @PostConstruct
     public void LoadProductFromDB() {
@@ -29,6 +33,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {
+        log.info("Product List: {}", productList);
         return productList;
     }
 
