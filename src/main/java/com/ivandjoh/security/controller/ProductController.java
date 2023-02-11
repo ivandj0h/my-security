@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/products")
+@RequestMapping("/products")
 public class ProductController {
 
     private ProductService productService;
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String home() {
         return "Welcome to the home page";
     }
@@ -26,11 +26,4 @@ public class ProductController {
     public Product getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
     }
-
-    @PostMapping("/add")
-    public Product addProduct(@RequestBody Product product) {
-        return productService.addProduct(product);
-    }
-
-
 }

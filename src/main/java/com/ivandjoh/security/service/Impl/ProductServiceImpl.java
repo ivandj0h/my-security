@@ -37,12 +37,6 @@ public class ProductServiceImpl implements ProductService {
         return productList.stream()
                 .filter(product -> product.getId().equals(id))
                 .findFirst()
-                .orElse(null);
-    }
-
-    @Override
-    public Product addProduct(Product product) {
-        productList.add(product);
-        return product;
+                .orElseThrow(() -> new RuntimeException("Product with ID : " + id + " not found!"));
     }
 }
