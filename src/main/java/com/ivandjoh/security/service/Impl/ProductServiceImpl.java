@@ -37,31 +37,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    public List<Product> getProducts() {
+    @Override
+    public List<Product> getAllProducts() {
         return productList;
     }
 
-    public Product getProduct(int id) {
+    @Override
+    public Product getProductById(int id) {
         return productList.stream()
                 .filter(product -> product.getProductId() == id)
                 .findAny()
                 .orElseThrow(() -> new RuntimeException("product " + id + " not found"));
     }
 
-
+    @Override
     public String addUser(UserInfo userInfo) {
         userInfo.setPassword(passwordEncoder.encode(userInfo.getPassword()));
         repository.save(userInfo);
-        return "User added successfully" + userInfo;
-    }
-
-    @Override
-    public List<Product> getAllProducts() {
-        return null;
-    }
-
-    @Override
-    public Product getProductById(int id) {
-        return null;
+        return "user added to system ";
     }
 }
